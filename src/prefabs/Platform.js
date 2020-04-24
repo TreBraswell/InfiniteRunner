@@ -10,7 +10,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         this.setVelocityX(-velocity);            // make it go!
         this.setImmovable();                    
         this.newPlatform = true;                 // custom property to control barrier spawning
-
+        this.body.setAllowGravity(false);
         this.scene = scene;
         this.velocity = velocity;
     }

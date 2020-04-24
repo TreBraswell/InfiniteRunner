@@ -8,15 +8,15 @@ class Menu extends Phaser.Scene {
         this.load.image('platimage', './assets/plat.png');
       }
       create() {
-        this.Platformspeed = 50;
+        this.Platformspeed = 200;
         this.jumps = 1;
         this.jumping = false;
         this.ship02 = new Platform(this,0,'platimage');
-        
+        this.physics.world.gravity.y = 2600;
         this.ship02.x = 320;
         this.ship02.y = 290;
         this.speed = 200;
-        this.JUMP_VELOCITY =200;
+        this.JUMP_VELOCITY = -700;
         //how fast our ball rotates
         this.updates = .1;
         this.player = this.physics.add.image(320, 240, 'yarn');
@@ -58,7 +58,7 @@ class Menu extends Phaser.Scene {
       // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
   if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150)) {
       
-    this.player.body.velocity.y = -this.JUMP_VELOCITY;
+    this.player.body.velocity.y = this.JUMP_VELOCITY;
       this.jumping = true;
   }
     // finally, letting go of the UP key subtracts a jump

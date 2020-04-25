@@ -26,6 +26,10 @@ game.settings = {
 
 // reserve some keyboard variables
 let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB;
+const platformHeight = 250;
+const platformWidth = 250;
+const diff = 100;
+
 function update()
 {
     game.mousedown = game.input.activePointer.leftButton.isDown;

@@ -60,6 +60,5 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     explode()
     {
         game.settings.platformspeed = 200;
-        
     }
 }

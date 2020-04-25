@@ -2,9 +2,8 @@
 class Platform extends Phaser.Physics.Arcade.Sprite {
     
     constructor(scene, velocity,plat,prevx,prevy) {
-        var tempy = Phaser.Math.Between(0, game.config.height);
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width, Phaser.Math.Between(0, game.config.height), plat); 
+        super(scene,  Phaser.Math.Between(game.config.width+platformWidth,game.config.width+platformWidth+game.config.width),  Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2), plat); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body
@@ -22,7 +21,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         super.update();
 
         // add new barrier when existing barrier hits center X
-        if(this.newPlatform&& this.x < game.config.width/2) {
+        if(this.newPlatform&& this.x < game.config.width-platformWidth) {
             this.newPlatform = false;
             // call parent scene method from this context
             this.scene.addPlatform(this.parent, this.velocity,this.text,this.x,this.y);

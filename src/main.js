@@ -21,7 +21,7 @@ function create()
     game.input.mouse.capture = true;
 }
 game.settings = {
-    spaceshipSpeed: 3   
+    platformspeed: 5  
 }
 
 // reserve some keyboard variables

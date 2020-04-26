@@ -8,6 +8,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body
         this.updates = .1;
+        this.size = 5;
         this.jumps = 1;
         this.jumping = false;
         this.speed = 200;
@@ -50,6 +51,15 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           this.jumps--;
           this.jumping = false;
         }
+        if(this.size==10)
+        {
+            explode();
+        }
+        
+    }
+    explode()
+    {
+        game.settings.platformspeed = 200;
         
     }
 }

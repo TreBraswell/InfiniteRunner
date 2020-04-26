@@ -1,5 +1,4 @@
-// Spaceship prefab
-class Platform extends Phaser.Physics.Arcade.Sprite {
+class Pin extends Phaser.Physics.Arcade.Sprite {
     
     constructor(scene, velocity,plat,prevx,prevy) {
         var tempy = Phaser.Math.Between(0, game.config.height);

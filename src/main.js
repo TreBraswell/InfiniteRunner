@@ -25,6 +25,7 @@ game.settings = {
     gameTimer: 60000,    
 }
 
+
 // reserve some keyboard variables
 let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB;
 function update()

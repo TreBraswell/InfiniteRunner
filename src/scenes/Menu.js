@@ -4,8 +4,8 @@ class Menu extends Phaser.Scene {
           super("menuScene");
       }
       preload() {
-        this.load.image('yarn', './assets/yarn.png');
-        this.load.image('platimage', './assets/plat.png');
+        this.load.image('yarn', './assets/yarn2_small.png');
+        this.load.image('platimage', './assets/plat2_small.png');
       }
       create() {
         this.Platformspeed = 200;
@@ -24,6 +24,40 @@ class Menu extends Phaser.Scene {
       this.addPlayer();
       this.addPlatform();
       this.physics.add.collider( this.platformGroup,this.playerGroup);
+
+
+      this.gameOver = false;
+
+      let scoreConfig = {
+        fontFamily: 'Courier',
+        fontSize: '28px',
+        backgroundColor: '#F3B141',
+        color: '#843605',
+        align: 'right',
+        padding: {
+            top: 5,
+            bottom: 5,
+        },
+        fixedWidth: 100
+    }
+
+      // 60-second play clock
+      scoreConfig.fixedWidth = 0;
+      this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
+          this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
+          this.add.text(game.config.width/2, game.config.height/2 + 64+64, '(F) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
+          this.gameOver = true;
+      }, null, this);
+
+      {
+        console.log('create');
+        this.initialTime = game.settings.gameTimer/1000;
+    
+        text = this.add.text(32, 32, 'Time: ' + formatTime(this.initialTime));
+    
+        timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true});
+    }
+
       }
       addPlatform() {
         let plat = new Platform(this, this.Platformspeed,'platimage');     // create new barrier
@@ -31,12 +65,36 @@ class Menu extends Phaser.Scene {
     }
     addPlayer(){
       let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
-      this.playerGroup.add(player);  
+      this.playerGroup.add(player);
     }
     update() {
+
       
      
 
    }
 
   }
+
+  var text;
+  var timedEvent;
+  function formatTime(seconds){
+          //min
+          minutes = Math.floor(seconds/60);
+          //secs
+          partInSeconds = seconds%60;
+          //add left zeroes to secs
+          partInSeconds = partInSeconds.toString().padStart(2, '0');
+          //returns time
+          return `${minutes}:${partInSeconds}`;
+     
+  }
+
+  function onEvent () {
+    if (!this.gameOver) {
+    this.initialTime -= 1; //one sec
+    text.setText('Time: ' + formatTime(this.initialTime));
+} else {
+    this.clock = false;
+}
+}

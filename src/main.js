@@ -12,7 +12,7 @@ let config = {
             }
         }
     },
-    scene: [ Menu ],
+    scene: [ Menu, Play, GameOver ],
 };
 
 let game = new Phaser.Game(config);
@@ -27,7 +27,8 @@ game.settings = {
 
 
 // reserve some keyboard variables
-let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB;
+let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB, keySPACE;
+var controlpage
 function update()
 {
     game.mousedown = game.input.activePointer.leftButton.isDown;

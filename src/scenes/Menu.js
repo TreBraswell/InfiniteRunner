@@ -6,6 +6,7 @@ class Menu extends Phaser.Scene {
       preload() {
         this.load.image('yarn', './assets/yarn2_small.png');
         this.load.image('platimage', './assets/plat2_small.png');
+        this.load.image('explosive', './assets/y1.png');
       }
       create() {
         this.Platformspeed = 200;
@@ -64,7 +65,7 @@ class Menu extends Phaser.Scene {
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
+      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive');
       this.playerGroup.add(player);
     }
     update() {

@@ -1,19 +1,9 @@
-// Spaceship prefab
-class Platform extends Phaser.Physics.Arcade.Sprite {
+class PinPlatform extends Phaser.Physics.Arcade.Sprite {
     
     constructor(scene, velocity,plat,prevx,prevy) {
+        var tempy = Phaser.Math.Between(0, game.config.height);
         // call Phaser Physics Sprite constructor
-        var tempx = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
-        var tempy = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);
-        while((tempy<(prevy+platformHeight))&&tempy>(prevy-platformHeight))
-        {
-            tempy = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);
-        }
-        while((tempx<(prevx+platformWidth))&&tempx>(prevx-platformWidth))
-        {
-            haser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
-        }
-        super(scene,  tempx, tempy , plat); 
+        super(scene, game.config.width, Phaser.Math.Between(0, game.config.height), plat); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body
@@ -31,7 +21,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         super.update();
 
         // add new barrier when existing barrier hits center X
-        if(this.newPlatform&& this.x < game.config.width-platformWidth) {
+        if(this.newPlatform&& this.x < game.config.width/2) {
             this.newPlatform = false;
             // call parent scene method from this context
             this.scene.addPlatform(this.parent, this.velocity,this.text,this.x,this.y);

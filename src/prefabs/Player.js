@@ -14,7 +14,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.speed = 200;
         this.JUMP_VELOCITY = -700;
         this.scene = scene;
-        this.setCollideWorldBounds(true);
         this.cursors = cursor;
         var particles = scene.add.particles(explosive);
         this.explosion = particles.createEmitter({
@@ -30,6 +29,18 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             quantity:10
 
         });
+        this.scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
         var particles1 = scene.add.particles(explosive);
         this.trail = particles1.createEmitter({
             "active":true,
@@ -76,6 +87,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        if(this.x<0||this.y>=game.config.height)
+        {
+            this.gameover();
+        }
         this.trail.setPosition(this.x, this.y);
         this.explosion.setPosition(this.x, this.y);
         if(this.size == 5)
@@ -122,8 +137,14 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
     explodeyarn()
     {
-        game.settings.platformspeed = 200;
+        game.settings.platformspeed = 10;
         this.explosion.explode();
         this.trail.setVisible(true);
     }
+    gameover()
+    {
+        this.scene.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
+        this.scene.add.text(game.config.width/2, game.config.height/2 + 64+64, '(F) to Restart or ← for Menu', this.scoreConfig).setOrigin(0.5);
+    }
+    
 }

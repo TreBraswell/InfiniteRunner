@@ -1,7 +1,8 @@
 class Menu extends Phaser.Scene {
-  
+
     constructor() {
           super("menuScene");
+          
       }
       preload() {
         this.load.image('yarn', './assets/yarn2_small.png');
@@ -9,7 +10,10 @@ class Menu extends Phaser.Scene {
         this.load.image('explosive', './assets/y1.png');
       }
       create() {
+        
+        
         this.Platformspeed = 200;
+       
         this.ship02 = new Platform(this,0,'platimage');
         this.physics.world.gravity.y = 2600;
         this.ship02.x = 320;
@@ -17,7 +21,15 @@ class Menu extends Phaser.Scene {
         this.playerGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
       });
-
+      this.pinGroup = this.add.group({
+        runChildUpdate: true    // make sure update runs on group children
+    });
+    this.buttonGroup = this.add.group({
+      runChildUpdate: true    // make sure update runs on group children
+  });
+    this.playerGroup = this.add.group({
+      runChildUpdate: true    // make sure update runs on group children
+  });
       this.platformGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
       });
@@ -28,7 +40,7 @@ class Menu extends Phaser.Scene {
 
 
       this.gameOver = false;
-
+      this.time.addEvent({ delay: 500, callback: hueShift , loop: true });
       let scoreConfig = {
         fontFamily: 'Courier',
         fontSize: '28px',
@@ -65,7 +77,7 @@ class Menu extends Phaser.Scene {
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive');
+      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),originalTexture);
       this.playerGroup.add(player);
     }
     update() {
@@ -98,4 +110,17 @@ class Menu extends Phaser.Scene {
 } else {
     this.clock = false;
 }
+}
+function hueShift ()
+{
+  this.originalTexture  = this.textures.get('explosive').getSourceImage();
+var pixels = context.getImageData(0, 0, this.originalTexture.width, this.originalTexture.height);
+
+for (i = 0; i < pixels.data.length / 4; i++)
+{
+    processPixel(pixels.data, i * 4, 0.1);
+}
+
+context.putImageData(pixels, 0, 0);
+originalTexture.refresh();
 }

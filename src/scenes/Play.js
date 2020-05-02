@@ -3,12 +3,19 @@ class Play extends Phaser.Scene {
   
     constructor() {
           super("playScene");
+          
       }
       preload() {
         this.load.image('yarn', './assets/yarn2_small.png');
         this.load.image('platimage', './assets/plat2_small.png');
       }
       create() {
+
+
+        this.bgm = game.sound.add('ingame_bgm');
+        this.bgm.loop = true;
+        this.bgm.play();
+        this.timers = 0 // this is the time variable that is changing when seconds is called
 
         this.background = this.add.tileSprite(0, 0, 1000, 1000, 'game_background').setOrigin(0, 0);
         this.Platformspeed = 200;
@@ -31,35 +38,31 @@ class Play extends Phaser.Scene {
 
       this.gameOver = false;
 
-      let scoreConfig = {
-        fontFamily: 'Courier',
-        fontSize: '28px',
-        backgroundColor: '#F3B141',
-        color: '#843605',
-        align: 'right',
-        padding: {
-            top: 5,
-            bottom: 5,
-        },
-        fixedWidth: 100
+
+    this.difficultyTimer = this.time.addEvent({
+      delay: 1000,
+      callback: this.timerBump,
+      callbackScope: this,
+      loop: true
+
+
+    });
+
+    let menuConfig = {
+      fontFamily: 'Courier',
+      fontSize: '18px',
+      color: '#000000',
+      align: 'right',
+      padding: {
+          top: 5,
+          bottom: 5,
+      },
+      fixedWidth: 0
     }
-
-      // 60-second play clock
-      scoreConfig.fixedWidth = 0;
-      this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-        //destroy all platforms and then have a smoother death animation
-
-          this.gameOver = true;
-      }, null, this);
-
-      {
-        console.log('create');
-        this.initialTime = game.settings.gameTimer/1000;
     
-        text = this.add.text(32, 32, 'Time: ' + formatTime(this.initialTime));
-    
-        timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true});
-    }
+
+    this.timerText = this.add.text(100, 200, this.timers, menuConfig).setOrigin(0,0);
+
 
       }
       addPlatform() {
@@ -73,6 +76,25 @@ class Play extends Phaser.Scene {
     update() {
       this.background.tilePositionX +=4;
 
+
+      this.timerText.text = this.timers
+
+      if (game.state.gameOver)
+      {
+        this.bgm.stop();
+
+        if(this.timers > game.persist.highScore)
+        {
+          
+          game.persist.isNew = true;
+          game.persist.highScore = this.timers
+        }
+
+        this.time.delayedCall(3000, () => { this.scene.start('gameoverScene'); });
+      }
+  
+
+
       //destroy all platforms and then have a smoother death animation
       
       //this.gameOver = true;
@@ -81,28 +103,18 @@ class Play extends Phaser.Scene {
      
 
    }
+   timerBump()
+{
+  this.timers++;
+}
 
   }
 
-  var text;
-  var timedEvent;
-  function formatTime(seconds){
-          //min
-          minutes = Math.floor(seconds/60);
-          //secs
-          partInSeconds = seconds%60;
-          //add left zeroes to secs
-          partInSeconds = partInSeconds.toString().padStart(2, '0');
-          //returns time
-          return `${minutes}:${partInSeconds}`;
-     
-  }
 
-  function onEvent () {
-    if (!this.gameOver) {
-    this.initialTime -= 1; //one sec
-    text.setText('Time: ' + formatTime(this.initialTime));
-} else {
-    this.clock = false;
-}
-}
+
+
+
+
+
+
+

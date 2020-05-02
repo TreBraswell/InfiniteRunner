@@ -20,6 +20,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+
+        if(this.y > game.config.height - 36)
+        {
+            game.state.gameOver = true;
+        }
         if(this.cursors.left.isDown) {
             this.rotation -=  this.updates;
             this.body.setVelocityX(-this.speed);

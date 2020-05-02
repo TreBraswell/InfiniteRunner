@@ -9,6 +9,8 @@ class Menu extends Phaser.Scene {
     this.load.image('gameover', './assets/gameoverScene.png')
     this.load.image('pins', './assets/pin.png')
     this.load.image('titleScreen', './assets/titleScene.png')
+    this.load.audio('title_bgm', './assets/bgm1.wav')
+    this.load.audio('ingame_bgm', './assets/bgm3.wav')
 
 
   }
@@ -17,6 +19,10 @@ class Menu extends Phaser.Scene {
 
   create()
   {
+    this.bgm = game.sound.add('title_bgm');
+        this.bgm.loop = true;
+        this.bgm.play();
+
 
     let menuConfig = {
       fontFamily: 'Courier',
@@ -46,12 +52,7 @@ class Menu extends Phaser.Scene {
   update()
   {
     if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-      // easy mode
-      game.settings = {
-        spaceshipSpeed: 3,
-        gameTimer: 60000, 
-
-      }
+      this.bgm.stop();
       this.scene.start("playScene");   
     
     }

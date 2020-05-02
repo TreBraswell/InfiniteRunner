@@ -28,6 +28,18 @@ game.settings = {
 
 // reserve some keyboard variables
 let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB, keySPACE;
+let timer;
+let keyR, keyM
+game.state = {
+    gameOver: false
+}
+
+game.persist = {
+    highScore: 0,
+    isNew: false    // this is handled in the Play.js, so we need info carried over from Play to GameOver Scene
+
+}
+
 var controlpage
 function update()
 {

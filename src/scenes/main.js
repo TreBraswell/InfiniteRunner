@@ -53,7 +53,8 @@ function hueShift ()
     newTexture.refresh();*/
 }
 game.settings = {
-    spaceshipSpeed: 3,
+    platformspeedslow: 200, 
+    platformspeedfast: 500, 
     gameTimer: 60000,    
 }
 

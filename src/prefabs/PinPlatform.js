@@ -17,19 +17,6 @@ class PinPlatform extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        // override physics sprite update()
-        super.update();
-
-        // add new barrier when existing barrier hits center X
-        if(this.newPlatform&& this.x < game.config.width/2) {
-            this.newPlatform = false;
-            // call parent scene method from this context
-            this.scene.addPlatform(this.parent, this.velocity,this.text,this.x,this.y);
-        }
-
         // destroy paddle if it reaches the left edge of the screen
-        if(this.x < 0) {
-            this.destroy();
-        }
     }
 }

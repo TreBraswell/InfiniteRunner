@@ -20,19 +20,19 @@ class Menu extends Phaser.Scene {
         this.ship02.y = 290;
         this.playerGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
-      });
-      this.pinGroup = this.add.group({
-        runChildUpdate: true    // make sure update runs on group children
-    });
-    this.buttonGroup = this.add.group({
-      runChildUpdate: true    // make sure update runs on group children
-  });
-    this.playerGroup = this.add.group({
-      runChildUpdate: true    // make sure update runs on group children
-  });
-      this.platformGroup = this.add.group({
+        });
+        this.pinGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
-      });
+        });
+        this.buttonGroup = this.add.group({
+           runChildUpdate: true    // make sure update runs on group children
+        });
+        this.playerGroup = this.add.group({
+           runChildUpdate: true    // make sure update runs on group children
+        });
+        this.platformGroup = this.add.group({
+          runChildUpdate: true    // make sure update runs on group children
+        });
       this.platformGroup.add(this.ship02);
       this.addPlayer();
       this.addPlatform();
@@ -80,6 +80,7 @@ class Menu extends Phaser.Scene {
       let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),originalTexture);
       this.playerGroup.add(player);
     }
+
     update() {
 
       

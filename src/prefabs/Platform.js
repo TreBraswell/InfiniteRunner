@@ -38,7 +38,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         }
 
         // destroy paddle if it reaches the left edge of the screen
-        if(this.x < 0) {
+        if(this.x < -200) {
             this.destroy();
         }
     }

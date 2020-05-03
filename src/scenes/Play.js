@@ -10,6 +10,7 @@ class Play extends Phaser.Scene {
         this.load.image('platimage', './assets/plat2_small.png');
 
         this.load.audio('gameover', './assets/death.wav')
+        this.load.audio('jump_sfx', './assets/jump.wav')
       }
       create() {
         
@@ -53,8 +54,8 @@ class Play extends Phaser.Scene {
 
     let menuConfig = {
       fontFamily: 'Courier',
-      fontSize: '18px',
-      color: '#000000',
+      fontSize: '60px',
+      color: '#FFFFFF',
       align: 'right',
       padding: {
           top: 5,
@@ -64,7 +65,7 @@ class Play extends Phaser.Scene {
     }
     
 
-    this.timerText = this.add.text(100, 200, this.timers, menuConfig).setOrigin(0,0);
+    this.timerText = this.add.text(10, 10, this.timers, menuConfig).setOrigin(0,0);
 
 
       }

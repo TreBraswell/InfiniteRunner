@@ -97,29 +97,28 @@ class Menu extends Phaser.Scene {
       
      
 
-   }
+    keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+    keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    keySPACE= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
   }
 
-  var text;
-  var timedEvent;
-  function formatTime(seconds){
-          //min
-          minutes = Math.floor(seconds/60);
-          //secs
-          partInSeconds = seconds%60;
-          //add left zeroes to secs
-          partInSeconds = partInSeconds.toString().padStart(2, '0');
-          //returns time
-          return `${minutes}:${partInSeconds}`;
-     
+
+  update()
+  {
+    if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
+      this.bgm.stop();
+      this.scene.start("playScene");   
+    
+    }
+
+    if(Phaser.Input.Keyboard.JustDown(keyRIGHT))
+    {
+      controlpage.alpha = true;
+
+
+    }
   }
 
-  function onEvent () {
-    if (!this.gameOver) {
-    this.initialTime -= 1; //one sec
-    text.setText('Time: ' + formatTime(this.initialTime));
-} else {
-    this.clock = false;
-}
-}
+ 
+

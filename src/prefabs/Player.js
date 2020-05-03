@@ -97,6 +97,7 @@ this.explosion.setPosition(this.x, this.y);
         if(game.state.gameOver)
         {
             this.alpha = false
+            this.destroy();
         }
         else{
 
@@ -134,9 +135,12 @@ this.explosion.setPosition(this.x, this.y);
           
         this.body.velocity.y = this.JUMP_VELOCITY;
           this.jumping = true;
+          
       }
         // finally, letting go of the UP key subtracts a jump
        if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.up)) {
+        this.jump_sfx = game.sound.add('jump_sfx'); 
+        this.jump_sfx.play()
           this.jumps--;
           this.jumping = false;
         }

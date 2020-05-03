@@ -28,7 +28,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             angle: { min: 0, max: 360 },
             scale: { start: 1, end: 0 },
             blendMode: 'SCREEN',
-            //active: false,
+            active: false,
             lifespan: 600,
             gravityY: 800,
             quantity:10
@@ -48,7 +48,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
         var particles1 = scene.add.particles(explosive);
         this.trail = particles1.createEmitter({
-            "active":true,
+            "active":false,
             "blendMode":0,
             "collideBottom":true,
             "collideLeft":true,

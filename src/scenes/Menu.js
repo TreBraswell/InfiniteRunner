@@ -40,7 +40,6 @@ class Menu extends Phaser.Scene {
 
 
       this.gameOver = false;
-      this.time.addEvent({ delay: 500, callback: hueShift , loop: true });
       let scoreConfig = {
         fontFamily: 'Courier',
         fontSize: '28px',
@@ -77,7 +76,7 @@ class Menu extends Phaser.Scene {
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),originalTexture);
+      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive');
       this.playerGroup.add(player);
     }
     addPin(){
@@ -123,17 +122,4 @@ class Menu extends Phaser.Scene {
 } else {
     this.clock = false;
 }
-}
-function hueShift ()
-{
-  this.originalTexture  = this.textures.get('explosive').getSourceImage();
-var pixels = context.getImageData(0, 0, this.originalTexture.width, this.originalTexture.height);
-
-for (i = 0; i < pixels.data.length / 4; i++)
-{
-    processPixel(pixels.data, i * 4, 0.1);
-}
-
-context.putImageData(pixels, 0, 0);
-originalTexture.refresh();
 }

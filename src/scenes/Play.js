@@ -122,7 +122,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-      if(this.timers%1==0&&this.timers!=this.prevtime)
+      if(this.timers%3==0&&this.timers!=this.prevtime)
       {
         console.log("printing");
         this.prevtime = this.timers;

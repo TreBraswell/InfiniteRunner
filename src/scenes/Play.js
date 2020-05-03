@@ -15,7 +15,15 @@ class Play extends Phaser.Scene {
       create() {
         
 
-
+        this.pinGroup = this.add.group({
+          runChildUpdate: true    // make sure update runs on group children
+        });
+        this.buttonGroup = this.add.group({
+           runChildUpdate: true    // make sure update runs on group children
+        });
+        this.pinplatformGroup = this.add.group({
+           runChildUpdate: true    // make sure update runs on group children
+        });
         this.bgm = game.sound.add('ingame_bgm');
         this.bgm.loop = true;
         this.bgm.play();
@@ -77,6 +85,19 @@ class Play extends Phaser.Scene {
       let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
       this.playerGroup.add(player);
     }
+    addPin(){
+      let pin = new Pin();
+      this.pinGroup.add(pin);
+    }
+    addButton(){
+      let button = new Button();
+      this.buttonGroup.add(button);
+    }
+    addPinPlatform(){
+        let PinPlatform  = new PinPlatform();
+        this.pinplatformGroup.add(PinPlatform);
+    }
+
     update() {
 
       if (!game.state.gameOver)

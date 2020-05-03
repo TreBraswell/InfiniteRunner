@@ -1,101 +1,47 @@
 class Menu extends Phaser.Scene {
-
-    constructor() {
-          super("menuScene");
-          
-      }
-      preload() {
-        this.load.image('yarn', './assets/yarn2_small.png');
-        this.load.image('platimage', './assets/plat2_small.png');
-        this.load.image('explosive', './assets/y1.png');
-      }
-      create() {
-        
-        
-        this.Platformspeed = 200;
-       
-        this.ship02 = new Platform(this,0,'platimage');
-        this.physics.world.gravity.y = 2600;
-        this.ship02.x = 320;
-        this.ship02.y = 290;
-        this.playerGroup = this.add.group({
-          runChildUpdate: true    // make sure update runs on group children
-        });
-        this.pinGroup = this.add.group({
-          runChildUpdate: true    // make sure update runs on group children
-        });
-        this.buttonGroup = this.add.group({
-           runChildUpdate: true    // make sure update runs on group children
-        });
-        this.pinplatformGroup = this.add.group({
-           runChildUpdate: true    // make sure update runs on group children
-        });
-        this.platformGroup = this.add.group({
-          runChildUpdate: true    // make sure update runs on group children
-        });
-      this.platformGroup.add(this.ship02);
-      this.addPlayer();
-      this.addPlatform();
-      this.physics.add.collider( this.platformGroup,this.playerGroup);
+  constructor() {
+      super("menuScene");
+  }
+  preload() {
+    this.load.image('game_background', './assets/background.png')
+    this.load.image('button', './assets/button.png')
+    this.load.image('controls', './assets/controlScene.png')
+    this.load.image('gameover', './assets/gameoverScene.png')
+    this.load.image('pins', './assets/pin.png')
+    this.load.image('titleScreen', './assets/titleScene.png')
+    this.load.audio('title_bgm', './assets/bgm1.wav')
+    this.load.audio('ingame_bgm', './assets/bgm3.wav')
 
 
-      this.gameOver = false;
-      let scoreConfig = {
-        fontFamily: 'Courier',
-        fontSize: '28px',
-        backgroundColor: '#F3B141',
-        color: '#843605',
-        align: 'right',
-        padding: {
-            top: 5,
-            bottom: 5,
-        },
-        fixedWidth: 100
+  }
+
+
+
+  create()
+  {
+    this.bgm = game.sound.add('title_bgm');
+        this.bgm.loop = true;
+        this.bgm.play();
+
+
+    let menuConfig = {
+      fontFamily: 'Courier',
+      fontSize: '18px',
+      color: '#000000',
+      align: 'right',
+      padding: {
+          top: 5,
+          bottom: 5,
+      },
+      fixedWidth: 0
     }
+    this.add.tileSprite(0, 0, 1000, 1000, 'titleScreen').setOrigin(0,0)
 
-      // 60-second play clock
-      scoreConfig.fixedWidth = 0;
-      this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-          this.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-          this.add.text(game.config.width/2, game.config.height/2 + 64+64, '(F) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
-          this.gameOver = true;
-      }, null, this);
+    controlpage = this.add.tileSprite(0, 0, 1000, 1000, 'controls').setOrigin(0,0);
+    controlpage.alpha =  false;
 
-      {
-        console.log('create');
-        this.initialTime = game.settings.gameTimer/1000;
-    
-        text = this.add.text(32, 32, 'Time: ' + formatTime(this.initialTime));
-    
-        timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, loop: true});
-    }
-
-      }
-    addPlatform() {
-        let plat = new Platform(this, this.Platformspeed,'platimage');     // create new barrier
-        this.platformGroup.add(plat);                         // add it to existing group
-    }
-    addPlayer(){
-      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive');
-      this.playerGroup.add(player);
-    }
-    addPin(){
-      let pin = new Pin();
-      this.pinGroup.add(pin);
-    }
-    addButton(){
-      let button = new Button();
-      this.buttonGroup.add(button);
-    }
-    addPinPlatform(){
-        let PinPlatform  = new PinPlatform();
-        this.pinplatformGroup.add(PinPlatform);
-    }
-
-    update() {
-
-      
-     
+    this.add.text(100, 200, 'Press LEFT to start', menuConfig).setOrigin(0,0);
+    this.add.text(100, 300, 'Press RIGHT for CONTROLS', menuConfig).setOrigin(0,0);
 
     keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);

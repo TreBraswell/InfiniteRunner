@@ -81,5 +81,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     {
         game.settings.platformspeed = 200;
         
+        
     }
 }

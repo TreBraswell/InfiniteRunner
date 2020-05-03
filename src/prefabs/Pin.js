@@ -1,9 +1,8 @@
 class Pin extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, velocity,plat) {
-        var tempy = Phaser.Math.Between(0, game.config.height);
+    constructor(scene, velocity,plat,x,y) {
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width, Phaser.Math.Between(0, game.config.height), plat); 
+        super(scene, x, y-45, plat); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body

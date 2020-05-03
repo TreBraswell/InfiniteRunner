@@ -11,10 +11,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.size = 5;
         this.jumps = 1;
         this.scaleof = 1.0;
-        this.scalechange = .009; 
-        this.jumpchange = 10;
+        this.scalechange = .08; 
+        this.jumpchange = 20;
         this.onCollide = true;
-        this.changespeed = 10; 
+        this.changespeed = 20; 
         this.jumping = false;
         this.speed = 400;
         this.differnce = 2;
@@ -170,8 +170,12 @@ this.explosion.setPosition(this.x, this.y);
         this.JUMP_VELOCITY += this.jumpchange; 
         this.size++;
     }
-    decreasesize()
+    decreasesize(amount)
     {
+        if(amount == 1)
+        {
+            this.scaleof-= this.scalechange;
+        }
         this.scaleof-= this.scalechange;
         this.setScale(this.scaleof);
         this.speed += this.changespeed;

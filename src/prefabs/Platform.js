@@ -3,8 +3,8 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
     
     constructor(scene, velocity,plat,prevx,prevy) {
         // call Phaser Physics Sprite constructor
-        let platformHeight = 10;
-        let platformWidth = 10;
+        let platformHeight = 103;
+        let platformWidth = 300;
         var tempx = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
         var tempy = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);
         while((tempy<(prevy+platformHeight))&&tempy>(prevy-platformHeight))
@@ -13,7 +13,7 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         }
         while((tempx<(prevx+platformWidth))&&tempx>(prevx-platformWidth))
         {
-            haser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
+            tempx = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
         }
         super(scene,  tempx, tempy , plat); 
         // set up physics sprite

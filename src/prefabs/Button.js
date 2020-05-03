@@ -1,9 +1,9 @@
 class Button extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, velocity,plat,prevx,prevy) {
+    constructor(scene, velocity,plat,x,y) {
         var tempy = Phaser.Math.Between(0, game.config.height);
         // call Phaser Physics Sprite constructor
-        super(scene, game.config.width, Phaser.Math.Between(0, game.config.height), plat); 
+        super(scene, x, y-40, plat); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body

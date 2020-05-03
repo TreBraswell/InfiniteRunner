@@ -1,7 +1,7 @@
 // Spaceship prefab
 class Platform extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, velocity,plat,prevx,prevy) {
+    constructor(scene, velocity,plat,prevx,prevy,spawnplatformwhen) {
         // call Phaser Physics Sprite constructor
         let platformHeight = 103;
         let platformWidth = 300;
@@ -38,14 +38,14 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
         super.update();
 
         // add new barrier when existing barrier hits center X
-        if(this.newPlatform&& this.x < game.config.width) {
+        if(this.newPlatform&& this.x <game.config.width) {
             this.newPlatform = false;
             // call parent scene method from this context
-            this.scene.addPlatform(this.parent, this.velocity,this.text,this.x,this.y);
+           // this.scene.addPlatform(this.parent, this.velocity,this.text,this.x,this.y,this.spawnplatformwhen);
         }
 
         // destroy paddle if it reaches the left edge of the screen
-        if(this.x < -200) {
+        if(this.x < 0-100) {
             this.destroy();
         }
     }

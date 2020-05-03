@@ -1,7 +1,7 @@
 // Player prefab
 class Player extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, x,y,plat,cursor,explosive) {
+    constructor(scene, x,y,plat,cursor,explosive,explosive2) {
         // call Phaser Physics Sprite constructor
         super(scene,x, y, plat); 
         // set up physics sprite
@@ -11,30 +11,21 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.size = 5;
         this.jumps = 1;
         this.scaleof = 1.0;
+        //explosion timer
+        this.explosiontimer = 0;
         this.scalechange = .08; 
         this.jumpchange = 20;
         this.onCollide = true;
         this.changespeed = 20; 
         this.jumping = false;
         this.speed = 400;
+        this.exploding = false;
         this.differnce = 2;
         this.JUMP_VELOCITY = -700;
         this.scene = scene;
         this.cursors = cursor;
-        var particles = scene.add.particles(explosive);
-        this.explosion = particles.createEmitter({
-            x: 1000,
-            y: 3000,
-            speed: { min: -800, max: 800 },
-            angle: { min: 0, max: 360 },
-            scale: { start: 1, end: 0 },
-            blendMode: 'SCREEN',
-            active: false,
-            lifespan: 600,
-            gravityY: 800,
-            quantity:10
 
-        });
+
         this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -47,65 +38,44 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             },
             fixedWidth: 100
         }
+        //taken from phaser example
         var particles1 = scene.add.particles(explosive);
-        this.trail = particles1.createEmitter({
-            "active":false,
-            "blendMode":0,
-            "collideBottom":true,
-            "collideLeft":true,
-            "collideRight":true,
-            "collideTop":true,
-            "deathCallback":null,
-            "deathCallbackScope":null,
-            "emitCallback":null,
-            "emitCallbackScope":null,
-            "follow":null,
-            "frequency":0,
-            "gravityX":-1000,
-            "gravityY":0,
-            "maxParticles":200,
-            "name":"",
-            "on":true,
-            "particleBringToTop":true,
-            "radial":true,
-            "timeScale":1,
-            "trackVisible":false,
-            "visible":true,
-            "accelerationX":0,
-            "accelerationY":0,
-            "angle":{"min":-110,"max":-70},
-            "alpha":1,
-            "bounce":0,
-            "delay":0,
-            "lifespan":{"min":500,"max":900},
-            "maxVelocityX":10000,"maxVelocityY":100,
-            "moveToX":0,
-            "moveToY":0,
-            "quantity":1,
-            "rotate":0,
-            "scaleX":1,
-            "scaleY":1,
-            "tint":0,
-            "x":0,
-            "y":0,
-            "speed":400});
+       this.trail = particles1.createEmitter({ 
+        x: 100,
+        y: 100,
+        quantity: 1,
+        frequency: 20,
+        angle: { min: 150, max: 190 },
+        speed: -400,
+        gravityX: 100,
+        lifespan: { min: 500, max: 1000 },
+    });
+            
 
     }
 
     update() {
-this.trail.setPosition(this.x, this.y);
-this.explosion.setPosition(this.x, this.y);
+        if(!this.exploding)
+        {
+            this.trail.setVisible(false);
+        }
+        if(this.explosiontimer >= 5)
+        {
+            this.exploding = false;
+            this.body.velocity.y = 0 ;
+            this.explosiontimer = 0;
+            this.body.setAllowGravity(true);
+            this.body.collideWorldBounds = false;
+            this.JUMP_VELOCITY = -700;
+            this.explosiontimer = 0;
+        }
+    this.trail.setPosition(this.x-10, this.y);
         if(game.state.gameOver)
         {
             this.alpha = false
             this.destroy();
         }
         else{
-
-
-
-
-        
 
         if(this.y > game.config.height - 36)
         {
@@ -132,14 +102,22 @@ this.explosion.setPosition(this.x, this.y);
         } 
           // allow steady velocity change up to a certain key down duration
           // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
-      if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150) && !game.state.gameOver ) {
+        if(this.cursors.up.isDown&& this.exploding)
+        {
+              this.body.velocity.y += -this.JUMP_VELOCITY;
+        }
+        if(Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150)&& this.exploding)
+        {
+            this.body.velocity.y = this.JUMP_VELOCITY;
+        }
+        if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150) && !game.state.gameOver&&!this.exploding ) {
           
         this.body.velocity.y = this.JUMP_VELOCITY;
           this.jumping = true;
           
       }
         // finally, letting go of the UP key subtracts a jump
-       if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.up)) {
+       if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.up)&&!this.exploding) {
         this.jump_sfx = game.sound.add('jump_sfx'); 
         this.jump_sfx.play()
           this.jumps--;
@@ -150,11 +128,13 @@ this.explosion.setPosition(this.x, this.y);
             this.explodeyarn();
         }
     }
+
     }
     explodeyarn()
     {
-        game.settings.platformspeed = 10;
-        this.explosion.explode();
+        //this.body.setAllowGravity(false);
+        this.JUMP_VELOCITY = -400;
+        //this.explosiontimer = 0;
         this.trail.setVisible(true);
     }
     gameover()
@@ -182,5 +162,10 @@ this.explosion.setPosition(this.x, this.y);
         this.size--;
         this.JUMP_VELOCITY -= this.jumpchange; 
     }
-    
+    increasetimer()
+    {
+        
+      this.explosiontimer=this.explosiontimer+1 ;
+      console.log(this.explosiontimer);
+    }
 }

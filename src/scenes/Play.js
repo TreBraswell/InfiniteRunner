@@ -6,6 +6,8 @@ class Play extends Phaser.Scene {
           
       }
       preload() {
+        this.load.image('explosive', './assets/y.png');
+        this.load.image('explosive2', './assets/y2.png');
         this.load.image('button', './assets/button.png');
         this.load.image('pin', './assets/pin_small1.png');
         this.load.image('yarn', './assets/yarn2_small.png');
@@ -18,7 +20,7 @@ class Play extends Phaser.Scene {
         this.load.audio('pinhit1', './assets/pinhit.wav');
       }
       create() {
-        
+        this.spawnplatformwhen = game.config.width;
         this.spawnpp = 0;
         this.pinGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
@@ -29,10 +31,6 @@ class Play extends Phaser.Scene {
         this.pinplatformGroup = this.add.group({
            runChildUpdate: true    // make sure update runs on group children
         });
-        
-        this.pin2  = game.sound.add('pinhit2');
-        this.buttonsound = game.sound.add('collectbutton');
-
         this.bgm = game.sound.add('ingame_bgm');
         this.bgm.loop = true;
         this.bgm.play();
@@ -57,7 +55,7 @@ class Play extends Phaser.Scene {
       this.physics.add.collider(this.platformGroup,this.playerGroup);
 
       this.gameOver = false;
-      
+      this.explosiontimer = 0;
 
       this.difficultyTimer = this.time.addEvent({
       delay: 1000,
@@ -81,11 +79,11 @@ class Play extends Phaser.Scene {
     }
 
     this.timerText = this.add.text(10, 10, this.timers, menuConfig).setOrigin(0,0);
-
+    this.prevtime= -1;
   }
       
    addPlatform() {
-        let plat = new Platform(this, this.Platformspeed,'platimage');     // create new barrier
+        let plat = new Platform(this, this.Platformspeed,'platimage',this.spawnplatformwhen);     // create new barrier
         this.spawnpp++;
         //if we should spawn an pin platform
         if(this.spawnpp%4==0)
@@ -100,14 +98,14 @@ class Play extends Phaser.Scene {
           }
           
         }
-        else if(this.spawnpp%10==0)
+        else if(this.spawnpp%3==0)
         {
           this.addButton(this,this.Platformspeed,'button',plat.x,plat.y);
         }
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
+      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive','explosive2');
       this.playerGroup.add(this.player);
     }
     addPin(a,b,c,d,e){
@@ -124,7 +122,19 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+      if(this.timers%1==0&&this.timers!=this.prevtime)
+      {
+        console.log("printing");
+        this.prevtime = this.timers;
+        this.addPlatform();
+
       
+      }
+      if(this.player.exploding)
+      {
+        this.Platformspeed = 600;
+        this.spawnplatformwhen = game.config.width;
+      }
       this.physics.add.overlap( this.pinplatformGroup,this.playerGroup,function(pin, player){
         this.pin2  = game.sound.add('pinhit2');
         this.pin2.play();
@@ -193,6 +203,21 @@ this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(p
    }
    timerBump()
 {
+  console.log(this.player.exploding);
+  console.log(this.player.explosiontimer);
+  if(this.player.exploding==true)
+  {
+    this.timers++;
+    this.timers++;
+    this.timers++;
+    this.timers++;
+    this.timers++;
+    this.timers++;
+    this.timers++;
+    this.timers++;
+  this.player.increasetimer();
+  this.player.decreasesize();
+  }
   this.timers++;
 }
 hitSprite (sprite1, sprite2) {

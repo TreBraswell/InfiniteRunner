@@ -22,7 +22,7 @@ function create()
     game.physics.startSystem(Phaser.Physics.ARCADE);
 }
 game.settings = {
-    spaceshipSpeed: 3,
+    platformspeed: 200,
     gameTimer: 60000,    
 }
 

@@ -18,7 +18,11 @@ class Pin extends Phaser.Physics.Arcade.Sprite {
     update() {
         // override physics sprite update()
         super.update();
-
+        if(game.state.gameOver)
+        {
+            this.alpha = false
+            this.destroy();
+        }
         // add new barrier when existing barrier hits center X
         if(this.newPlatform&& this.x < game.config.width/2) {
             this.newPlatform = false;

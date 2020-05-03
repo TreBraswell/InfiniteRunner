@@ -30,6 +30,7 @@ game.settings = {
 let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB, keySPACE;
 let timer;
 let keyR, keyM
+let cursors;
 
 game.state = {
     gameOver: false,

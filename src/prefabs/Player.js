@@ -18,6 +18,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.cursors = cursor;
 
     }
+    
 
     update() {
 
@@ -81,6 +82,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     {
         game.settings.platformspeed = 200;
         
-        
+
     }
 }

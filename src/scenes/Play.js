@@ -11,6 +11,7 @@ class Play extends Phaser.Scene {
 
         this.load.audio('gameover', './assets/death.wav')
         this.load.audio('jump_sfx', './assets/jump.wav')
+        
       }
       create() {
         

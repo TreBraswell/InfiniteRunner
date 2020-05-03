@@ -27,6 +27,11 @@ class Platform extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
+        if(game.state.gameOver)
+        {
+            this.destroy()
+        }
+    
         // override physics sprite update()
         super.update();
 

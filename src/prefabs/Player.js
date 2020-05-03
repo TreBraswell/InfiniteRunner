@@ -92,26 +92,30 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
 
     update() {
-        if(this.x<0||this.y>=game.config.height)
+this.trail.setPosition(this.x, this.y);
+this.explosion.setPosition(this.x, this.y);
+        if(game.state.gameOver)
         {
-            this.gameover();
+            this.alpha = false
         }
-        this.trail.setPosition(this.x, this.y);
-        this.explosion.setPosition(this.x, this.y);
-        if(this.size == 5)
+        else{
+
+
+
+
+        
+
+        if(this.y > game.config.height - 36)
         {
-            this.explodeyarn();
-            this.size = 4;
+            game.state.gameOver = true;
         }
-        if(this.cursors.left.isDown) {
-            this.decreasesize();
+        if(this.cursors.left.isDown && !game.state.gameOver) {
             this.rotation -=  this.updates;
             this.body.setVelocityX(-this.speed);
-        } else if(this.cursors.right.isDown) {
-            this.increasesize();
+        } else if(this.cursors.right.isDown &&  !game.state.gameOver) {
             this.body.setVelocityX(this.speed);
             this.rotation +=  this.updates;
-        } else {
+        } else if (!game.state.gameOver){
             // set acceleration to 0 so DRAG will take over
             this.body.setVelocityX(0);
       
@@ -120,13 +124,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         // check if player is grounded
         this.isGrounded = this.body.touching.down;
         // if so, we have jumps to spare 
-        if(this.isGrounded) {
+        if(this.isGrounded ) {
            this.jumps = 1;
           this.jumping = false;
         } 
           // allow steady velocity change up to a certain key down duration
           // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
-      if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150)) {
+      if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150) && !game.state.gameOver ) {
           
         this.body.velocity.y = this.JUMP_VELOCITY;
           this.jumping = true;
@@ -140,7 +144,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         {
             this.explodeyarn();
         }
-        
+    }
     }
     explodeyarn()
     {

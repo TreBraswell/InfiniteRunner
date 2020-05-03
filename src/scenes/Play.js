@@ -8,8 +8,11 @@ class Play extends Phaser.Scene {
       preload() {
         this.load.image('yarn', './assets/yarn2_small.png');
         this.load.image('platimage', './assets/plat2_small.png');
+
+        this.load.audio('gameover', './assets/death.wav')
       }
       create() {
+        
 
 
         this.bgm = game.sound.add('ingame_bgm');
@@ -74,6 +77,8 @@ class Play extends Phaser.Scene {
       this.playerGroup.add(player);
     }
     update() {
+
+      if (!game.state.gameOver)
       this.background.tilePositionX +=4;
 
 
@@ -82,6 +87,13 @@ class Play extends Phaser.Scene {
       if (game.state.gameOver)
       {
         this.bgm.stop();
+        
+        if(!game.state.played_death)
+        {
+        this.deathSound = game.sound.add('gameover');
+        this.deathSound.play();
+        game.state.played_death = true;
+      }
 
         if(this.timers > game.persist.highScore)
         {

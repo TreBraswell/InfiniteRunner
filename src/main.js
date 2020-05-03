@@ -30,8 +30,10 @@ game.settings = {
 let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB, keySPACE;
 let timer;
 let keyR, keyM
+
 game.state = {
-    gameOver: false
+    gameOver: false,
+    played_death: false
 }
 
 game.persist = {

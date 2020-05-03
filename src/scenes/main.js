@@ -53,6 +53,7 @@ function hueShift ()
     newTexture.refresh();*/
 }
 game.settings = {
+    platformpins: 0,
     platformspeedslow: 200, 
     platformspeedfast: 500, 
     gameTimer: 60000,    

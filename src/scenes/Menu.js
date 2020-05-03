@@ -27,7 +27,7 @@ class Menu extends Phaser.Scene {
         this.buttonGroup = this.add.group({
            runChildUpdate: true    // make sure update runs on group children
         });
-        this.playerGroup = this.add.group({
+        this.pinplatformGroup = this.add.group({
            runChildUpdate: true    // make sure update runs on group children
         });
         this.platformGroup = this.add.group({
@@ -72,13 +72,25 @@ class Menu extends Phaser.Scene {
     }
 
       }
-      addPlatform() {
+    addPlatform() {
         let plat = new Platform(this, this.Platformspeed,'platimage');     // create new barrier
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
       let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),originalTexture);
       this.playerGroup.add(player);
+    }
+    addPin(){
+      let pin = new Pin();
+      this.pinGroup.add(pin);
+    }
+    addButton(){
+      let button = new Button();
+      this.buttonGroup.add(button);
+    }
+    addPinPlatform(){
+        let PinPlatform  = new PinPlatform();
+        this.pinplatformGroup.add(PinPlatform);
     }
 
     update() {

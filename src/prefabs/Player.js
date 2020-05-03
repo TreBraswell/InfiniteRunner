@@ -10,8 +10,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.updates = .1;
         this.size = 5;
         this.jumps = 1;
+        this.scaleof = 1.0;
+        this.scalechange = .009; 
+        this.jumpchange = 10;
+        this.changespeed = 10; 
         this.jumping = false;
-        this.speed = 200;
+        this.speed = 400;
+        this.differnce = 2;
         this.JUMP_VELOCITY = -700;
         this.scene = scene;
         this.cursors = cursor;
@@ -99,9 +104,11 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.size = 4;
         }
         if(this.cursors.left.isDown) {
+            this.decreasesize();
             this.rotation -=  this.updates;
             this.body.setVelocityX(-this.speed);
         } else if(this.cursors.right.isDown) {
+            this.increasesize();
             this.body.setVelocityX(this.speed);
             this.rotation +=  this.updates;
         } else {
@@ -145,6 +152,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     {
         this.scene.add.text(game.config.width/2, game.config.height/2, 'GAME OVER', this.scoreConfig).setOrigin(0.5);
         this.scene.add.text(game.config.width/2, game.config.height/2 + 64+64, '(F) to Restart or ← for Menu', this.scoreConfig).setOrigin(0.5);
+    }
+    increasesize()
+    {
+        this.scaleof+= this.scalechange;
+        this.setScale(this.scaleof);
+        this.speed -= this.changespeed;
+        this.JUMP_VELOCITY += this.jumpchange; 
+        this.size++;
+    }
+    decreasesize()
+    {
+        this.scaleof-= this.scalechange;
+        this.setScale(this.scaleof);
+        this.speed += this.changespeed;
+        this.size--;
+        this.JUMP_VELOCITY -= this.jumpchange; 
     }
     
 }

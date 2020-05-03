@@ -18,5 +18,8 @@ class PinPlatform extends Phaser.Physics.Arcade.Sprite {
 
     update() {
         // destroy paddle if it reaches the left edge of the screen
+        if(this.x < -200) {
+            this.destroy();
+        }
     }
 }

@@ -8,13 +8,13 @@ class Play extends Phaser.Scene {
       preload() {
         this.load.image('yarn', './assets/yarn2_small.png');
         this.load.image('platimage', './assets/plat2_small.png');
-
+        this.load.image('pinplat', './assets/pin.png');
         this.load.audio('gameover', './assets/death.wav')
         this.load.audio('jump_sfx', './assets/jump.wav')
       }
       create() {
         
-
+        this.spawnpp =0;
         this.pinGroup = this.add.group({
           runChildUpdate: true    // make sure update runs on group children
         });
@@ -47,9 +47,8 @@ class Play extends Phaser.Scene {
       this.addPlatform();
       this.physics.add.collider( this.platformGroup,this.playerGroup);
 
-
       this.gameOver = false;
-
+      
 
     this.difficultyTimer = this.time.addEvent({
       delay: 1000,
@@ -71,19 +70,24 @@ class Play extends Phaser.Scene {
       },
       fixedWidth: 0
     }
-    
 
     this.timerText = this.add.text(10, 10, this.timers, menuConfig).setOrigin(0,0);
 
-
-      }
-      addPlatform() {
+  }
+      
+   addPlatform() {
         let plat = new Platform(this, this.Platformspeed,'platimage');     // create new barrier
+        this.spawnpp++;
+        //if we should spawn an pin platform
+        if(this.spawnpp%1==0)
+        {
+          this.addPinPlatform(this,this.Platformspeed,'pinplat',plat.x,plat.y);
+        }
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      let player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
-      this.playerGroup.add(player);
+      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys());
+      this.playerGroup.add(this.player);
     }
     addPin(){
       let pin = new Pin();
@@ -93,13 +97,17 @@ class Play extends Phaser.Scene {
       let button = new Button();
       this.buttonGroup.add(button);
     }
-    addPinPlatform(){
-        let PinPlatform  = new PinPlatform();
-        this.pinplatformGroup.add(PinPlatform);
+    addPinPlatform(a,b,c,d,e){
+        let Pin  = new PinPlatform(a,b,c,d,e);
+        this.pinplatformGroup.add(Pin);
     }
 
     update() {
+      
+      this.physics.add.overlap( this.pinplatformGroup,this.playerGroup,function(player, pin){
+        pin.destroy();
 
+    });
       if (!game.state.gameOver)
       this.background.tilePositionX +=4;
 
@@ -137,9 +145,15 @@ class Play extends Phaser.Scene {
      
 
    }
+   pinhit()
+   {
+     console.log("are we here");
+   }
    timerBump()
 {
   this.timers++;
+}
+hitSprite (sprite1, sprite2) {
 }
 
   }

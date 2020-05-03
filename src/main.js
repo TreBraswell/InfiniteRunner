@@ -19,6 +19,7 @@ let game = new Phaser.Game(config);
 function create()
 {
     game.input.mouse.capture = true;
+    game.physics.startSystem(Phaser.Physics.ARCADE);
 }
 game.settings = {
     spaceshipSpeed: 3,

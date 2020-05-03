@@ -24,6 +24,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         if(game.state.gameOver)
         {
             this.alpha = false
+            this.destroy();
         }
         else{
 
@@ -61,9 +62,12 @@ class Player extends Phaser.Physics.Arcade.Sprite {
           
         this.body.velocity.y = this.JUMP_VELOCITY;
           this.jumping = true;
+          
       }
         // finally, letting go of the UP key subtracts a jump
        if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.up)) {
+        this.jump_sfx = game.sound.add('jump_sfx'); 
+        this.jump_sfx.play()
           this.jumps--;
           this.jumping = false;
         }

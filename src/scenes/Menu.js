@@ -45,13 +45,14 @@ class Menu extends Phaser.Scene {
 
     keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
     keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+    keySPACE= this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
   }
 
 
   update()
   {
-    if (Phaser.Input.Keyboard.JustDown(keyLEFT)) {
+    if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
       this.bgm.stop();
       this.scene.start("playScene");   
     

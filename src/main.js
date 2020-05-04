@@ -39,6 +39,7 @@ game.state = {
 
 game.persist = {
     highScore: 0,
+    currScore: 0,
     isNew: false    // this is handled in the Play.js, so we need info carried over from Play to GameOver Scene
 
 }

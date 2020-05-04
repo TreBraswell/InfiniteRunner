@@ -1,7 +1,7 @@
 // Player prefab
 class Player extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, x,y,plat,cursor,explosive,explosive2) {
+    constructor(scene, x,y,plat,cursor,explosive,explosive2, yarn) {
         // call Phaser Physics Sprite constructor
         super(scene,x, y, plat); 
         // set up physics sprite
@@ -24,6 +24,54 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.JUMP_VELOCITY = -700;
         this.scene = scene;
         this.cursors = cursor;
+        this.yarn = yarn;
+
+        scene.anims.create({ 
+            key: 'right', 
+           defaultTextureKey: 'yarn_atlas',
+	   frames: [
+                { frame: 'yarn_right' }
+            ],
+        });
+        scene.anims.create({
+            key: 'left',
+            defaultTextureKey: 'yarn_atlas',
+            frames: [
+                { frame: 'yarn_left' }
+            ],
+        });
+        scene.anims.create({
+            key: 'jump',
+            defaultTextureKey: 'yarn_atlas',
+            frames: [
+                { frame: 'yarn_up' }
+            ],
+        });
+        scene.anims.create({
+            key: 'hit',
+            defaultTextureKey: 'yarn_atlas',
+            frames: [
+                { frame: 'yarn_hit' }
+            ],
+        });
+        scene.anims.create({
+            key: 'prexplode',
+            defaultTextureKey: 'yarn_atlas',
+            frames: [
+                { frame: 'yarn_grow' }
+            ],
+        });
+        scene.anims.create({
+            key: 'explode',
+            defaultTextureKey: 'yarn_atlas',
+            frames: [
+                { frame: 'poof' }
+            ],
+        });
+        
+
+
+
 
 
         this.scoreConfig = {
@@ -54,6 +102,9 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
     }
 
+
+
+
     update() {
         if(!this.exploding)
         {
@@ -70,12 +121,36 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.explosiontimer = 0;
         }
     this.trail.setPosition(this.x-10, this.y);
+
+    if(this.size == 0)
+    {
+        game.state.gameOver = true;
+    }
         if(game.state.gameOver)
         {
             this.alpha = false
             this.destroy();
         }
         else{
+
+
+            if(this.cursors.left.isDown) {
+
+                this.yarn.setFlip(true, false);
+                // see: https://photonstorm.github.io/phaser3-docs/Phaser.GameObjects.Components.Animation.html#play__anchor
+                // play(key [, ignoreIfPlaying] [, startFrame])
+                this.yarn.anims.play('left', true);
+            } else if(this.cursors.right.isDown) {
+
+                this.yarn.resetFlip();
+                this.yarn.anims.play('right', true);
+        } else if(this.cursors.up.isDown) {
+                this.yarn.resetFlip();
+                this.yarn.anims.play('jump', true);
+            }
+        else {
+               // this.yarn.body.velocity.x = 0;
+            }
 
         if(this.y > game.config.height - 36)
         {
@@ -144,8 +219,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     }
     increasesize()
     {
+
         this.scaleof+= this.scalechange;
         this.setScale(this.scaleof);
+        this.yarn.setScale(this.scaleof);
         this.speed -= this.changespeed;
         this.JUMP_VELOCITY += this.jumpchange; 
         this.size++;

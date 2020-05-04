@@ -18,8 +18,20 @@ class Play extends Phaser.Scene {
         this.load.audio('collectbutton', './assets/collectbutton.wav');
         this.load.audio('pinhit2', './assets/pinhit_2.wav');
         this.load.audio('pinhit1', './assets/pinhit.wav');
+
+        this.load.atlas('yarn_atlas', 'assets/yarn_spritesheet.png', 'assets/yarn_sprites.json');
+
+         //  Just a few images to use in our underwater scene
+       this.load.image('yarn', 'assets/yarn_spritesheet.png');
+
+
+
+
       }
       create() {
+        this.yarn = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
+
+
         this.spawnplatformwhen = game.config.width;
         this.spawnpp = 0;
         this.pinGroup = this.add.group({
@@ -105,7 +117,7 @@ class Play extends Phaser.Scene {
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive','explosive2');
+      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive','explosive2', this.yarn);
       this.playerGroup.add(this.player);
     }
     addPin(a,b,c,d,e){
@@ -148,12 +160,18 @@ class Play extends Phaser.Scene {
       button.destroy();
       player.increasesize();
 
+      // increase button count
+
   });
   this.physics.add.overlap( this.pinGroup,this.playerGroup,function(pin, player){
     this.pin1  = game.sound.add('pinhit1');
     this.pin1.play();
     pin.destroy();
     player.decreasesize(0);
+
+    // decrease hp we have 3 hp
+
+
 
 });
 this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(plat1, plat2){
@@ -186,7 +204,9 @@ this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(p
           
           game.persist.isNew = true;
           game.persist.highScore = this.timers
+          
         }
+        game.persist.currScore = this.timers
 
         this.time.delayedCall(3000, () => { this.scene.start('gameoverScene'); });
       }

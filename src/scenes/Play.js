@@ -3,6 +3,8 @@ class Play extends Phaser.Scene {
   
     constructor() {
           super("playScene");
+          this.tempx = 0;
+          this.tempy = 0;
           
       }
       preload() {
@@ -11,13 +13,14 @@ class Play extends Phaser.Scene {
         this.load.image('button', './assets/button.png');
         this.load.image('pin', './assets/pin_small1.png');
         this.load.image('yarn', './assets/yarn2_small.png');
-        this.load.image('platimage', './assets/plat2_small.png');
+        this.load.image('platimage', './assets/platfinal.png');
         this.load.image('pinplat', './assets/pin.png');
         this.load.audio('gameover', './assets/death.wav');
         this.load.audio('jump_sfx', './assets/jump.wav');
         this.load.audio('collectbutton', './assets/collectbutton.wav');
         this.load.audio('pinhit2', './assets/pinhit_2.wav');
         this.load.audio('pinhit1', './assets/pinhit.wav');
+        this.load.audio('boom', './assets/poof1.wav');
 
   this.load.atlas('yarn_atlas', './assets/yarn2_small.png', './assets/yarn1.json');
 
@@ -35,6 +38,7 @@ class Play extends Phaser.Scene {
 
       }
       create() {
+       
         game.sound.stopAll(); 
         this.yarn = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
 
@@ -42,7 +46,7 @@ class Play extends Phaser.Scene {
 
 
         this.buttonCounter = 0;
-
+        this.playthesound= false;
         this.spawnplatformwhen = game.config.width;
         this.spawnpp = 0;
         this.pinGroup = this.add.group({
@@ -55,6 +59,7 @@ class Play extends Phaser.Scene {
            runChildUpdate: true    // make sure update runs on group children
         });
         this.bgm = game.sound.add('ingame_bgm');
+        this.boom1 = game.sound.add('boom');
         this.bgm.loop = true;
         this.bgm.play();
         this.timers = 0 // this is the time variable that is changing when seconds is called
@@ -116,29 +121,29 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
   }
       
    addPlatform() {
-        let plat = new Platform(this, this.Platformspeed,'platimage',this.spawnplatformwhen);     // create new barrier
+        this.plat = new Platform(this, this.Platformspeed,'platimage',this.spawnplatformwhen);     // create new barrier
         this.spawnpp++;
         //if we should spawn an pin platform
-        if(this.spawnpp%4==0)
+        if(this.spawnpp%3==0)
         {
           if(Phaser.Math.Between(0,1)>=.5)
           {
-            this.addPinPlatform(this,this.Platformspeed,'pinplat',plat.x,plat.y);
+            this.addPinPlatform(this,this.Platformspeed,'pinplat',this.plat.x,this.plat.y);
           }
           else
           {
-            this.addPin(this,this.Platformspeed,'pin',plat.x,plat.y);
+            this.addPin(this,this.Platformspeed,'pin',this.plat.x,this.plat.y);
           }
           
         }
-        else if(this.spawnpp%3==0)
+        else if(this.spawnpp%2==0)
         {
-          this.addButton(this,this.Platformspeed,'button',plat.x,plat.y);
+          this.addButton(this,this.Platformspeed,'button',this.plat.x,this.plat.y);
         }
-        this.platformGroup.add(plat);                         // add it to existing group
+        this.platformGroup.add(this.plat);                         // add it to existing group
     }
     addPlayer(){
-      this.player = new Player(this,320, 240, 'yarn_atlas',this.input.keyboard.createCursorKeys(),'explosive','explosive2', this.yarn,'yarn_atlas','yarn_right');
+      this.player = new Player(this,320, 240, 'yarn_atlas',this.input.keyboard.createCursorKeys(),'explosive','explosive2', this.yarn,'yarn_atlas','yarn_right',this.boom1);
       this.playerGroup.add(this.player);
     }
     addPin(a,b,c,d,e){
@@ -155,9 +160,9 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
     }
 
     update() {
-      if(this.timers%3==0&&this.timers!=this.prevtime)
+      this.checkoverlap();
+      if(this.timers%1==0&&this.timers!=this.prevtime)
       {
-        console.log("printing");
         this.prevtime = this.timers;
         this.addPlatform();
 
@@ -166,6 +171,11 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
       if(this.player.exploding)
       {
         this.Platformspeed = 600;
+        if(this.playthesound == false)
+        {
+          this.boom1.play();
+          this.playthesound = true;
+        }
         this.spawnplatformwhen = game.config.width;
       }
       this.physics.add.overlap( this.pinplatformGroup,this.playerGroup,function(pin, player){
@@ -200,13 +210,14 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
 
 
 });
+
 this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(plat1, plat2){
   let platformHeight = 103;
   let platformWidth = 300;
   plat1.x = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
   plat1.y = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);
-  /*plat2.x = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
-  plat2.y = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);*/
+  plat2.x = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
+  plat2.y = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);
 });
 if(game.state.hitPin)
 {
@@ -285,8 +296,7 @@ if(game.state.health == 0)
    }
    timerBump()
 {
-  console.log(this.player.exploding);
-  console.log(this.player.explosiontimer);
+
   if(this.player.exploding==true)
   {
     this.timers++;
@@ -300,11 +310,18 @@ if(game.state.health == 0)
   this.player.increasetimer();
   this.player.decreasesize();
   }
+  else
+  {
+  this.playthesound = false;
+  }
   this.timers++;
 }
 hitSprite (sprite1, sprite2) {
 }
-
+checkoverlap()
+{
+  
+}
   }
 
 

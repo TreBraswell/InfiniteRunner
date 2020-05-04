@@ -1,9 +1,9 @@
 // Player prefab
 class Player extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, x,y,plat,cursor,explosive,explosive2, yarn,yarn_right,yarn_atlas) {
+    constructor(scene, x,y,plat,cursor,explosive,explosive2, yarn,yarn_right,yarn_atlas,boom) {
         // call Phaser Physics Sprite constructor
-        super(scene,x, y, plat); 
+        super(scene,x, y-10, plat); 
         // set up physics sprite
         scene.add.existing(this);               // add to existing scene, displayList, updateList
         scene.physics.add.existing(this);       // add physics body
@@ -163,6 +163,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.JUMP_VELOCITY = -400;
         //this.explosiontimer = 0;
         this.trail.setVisible(true);
+
     }
     gameover()
     {

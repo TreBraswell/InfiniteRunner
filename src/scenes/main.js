@@ -21,6 +21,7 @@ var originalTexture;
 let game = new Phaser.Game(config);
 function preload() 
 {
+    this.load.audio('pageflip', './assets/menu_click.wav')
     this.load.image('dude', './assets/yarn2_small.png');
 }
 function create()

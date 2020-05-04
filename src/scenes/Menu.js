@@ -3,7 +3,7 @@ class Menu extends Phaser.Scene {
       super("menuScene");
   }
   preload() {
-    this.load.image('game_background', './assets/background.png')
+    this.load.image('game_background', './assets/background1.png')
     this.load.image('button', './assets/button.png')
     this.load.image('gameover', './assets/gameoverScene.png')
     this.load.image('pins', './assets/pin.png')
@@ -20,6 +20,7 @@ class Menu extends Phaser.Scene {
 
   create()
   {
+    this.flip = game.sound.add('pageflip');
     game.sound.stopAll(); 
     this.bgm = game.sound.add('title_bgm');
         this.bgm.loop = true;
@@ -58,6 +59,7 @@ class Menu extends Phaser.Scene {
     }
     if(Phaser.Input.Keyboard.JustDown(keyRIGHT))
     {
+      this.flip.play();
       this.scene.start("controlScene");
     }
 

@@ -14,6 +14,7 @@ class Controls extends Phaser.Scene {
 
     create()
     {
+        this.flip = game.sound.add('pageflip');
         this.add.tileSprite(0, 0, 1000, 1000, 'controls').setOrigin(0,0);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -32,12 +33,12 @@ class Controls extends Phaser.Scene {
           }
           if(Phaser.Input.Keyboard.JustDown(keyLEFT))
           {
-
+            this.flip.play();
             this.scene.start("menuScene");   
           }
           if(Phaser.Input.Keyboard.JustDown(keyRIGHT))
           {
-
+            this.flip.play();
             this.scene.start("ruleScene");   
           }
     }

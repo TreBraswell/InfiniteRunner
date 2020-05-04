@@ -177,22 +177,22 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         } 
           // allow steady velocity change up to a certain key down duration
           // see: https://photonstorm.github.io/phaser3-docs/Phaser.Input.Keyboard.html#.DownDuration__anchor
-        if(this.cursors.up.isDown&& this.exploding)
+        if(this.cursors.space.isDown&& this.exploding)
         {
               this.body.velocity.y += -this.JUMP_VELOCITY;
         }
-        if(Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150)&& this.exploding)
+        if(Phaser.Input.Keyboard.DownDuration(this.cursors.space, 150)&& this.exploding)
         {
             this.body.velocity.y = this.JUMP_VELOCITY;
         }
-        if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.up, 150) && !game.state.gameOver&&!this.exploding ) {
+        if(this.jumps > 0 && Phaser.Input.Keyboard.DownDuration(this.cursors.space, 150) && !game.state.gameOver&&!this.exploding ) {
           
         this.body.velocity.y = this.JUMP_VELOCITY;
           this.jumping = true;
           
       }
         // finally, letting go of the UP key subtracts a jump
-       if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.up)&&!this.exploding) {
+       if(this.jumping && Phaser.Input.Keyboard.UpDuration(this.cursors.space)&&!this.exploding) {
         this.jump_sfx = game.sound.add('jump_sfx'); 
         this.jump_sfx.play()
           this.jumps--;

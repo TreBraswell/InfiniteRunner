@@ -38,6 +38,8 @@ class Play extends Phaser.Scene {
         this.yarn = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
 
 
+
+
         this.buttonCounter = 0;
 
         this.spawnplatformwhen = game.config.width;
@@ -97,6 +99,13 @@ class Play extends Phaser.Scene {
       },
       fixedWidth: 0
     }
+
+
+
+    this.heart1 = this.add.image(10, 400, 'heart').setOrigin(0,0);
+    this.heart2 = this.add.image(50, 400, 'heart').setOrigin(0,0);
+    this.heart3 = this.add.image(90, 400, 'heart').setOrigin(0,0);
+
 
     this.add.image(10, 10, 'timetext').setOrigin(0,0)
     this.add.image(500,10,'buttontext').setOrigin(0,0)
@@ -163,6 +172,8 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
         this.pin2.play();
         pin.destroy();
         player.decreasesize(1);
+        game.state.health--;
+        game.state.hitPin = true;
 
     });
     this.physics.add.overlap( this.buttonGroup,this.playerGroup,function(button, player){
@@ -180,6 +191,8 @@ this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0
     this.pin1.play();
     pin.destroy();
     player.decreasesize(0);
+    game.state.health--;
+    game.state.hitPin = true;
 
     // decrease hp we have 3 hp
 
@@ -194,11 +207,36 @@ this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(p
   /*plat2.x = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
   plat2.y = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);*/
 });
+if(game.state.hitPin)
+{
+  if(game.state.health == 2)
+  {
+    this.heart3.destroy()
+  }
+  if(game.state.health == 1)
+  {
+    this.heart2.destroy()
+  }
+  if(game.state.health == 0)
+  {
+    this.heart1.destroy()
+  }
+
+
+  game.state.hitPin = false
+}
+if(game.state.health == 0)
+{
+  game.state.gameOver = true;
+}
+
       if (!game.state.gameOver)
       this.background.tilePositionX +=4;
 
 
       this.timerText.text = this.timers
+
+
 
 
 

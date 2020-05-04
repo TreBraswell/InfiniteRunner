@@ -37,6 +37,7 @@ game.state = {
     gameOver: false,
     played_death: false,
     collectedButton: false,
+    hitPin: false,
     health: 3
     
 }

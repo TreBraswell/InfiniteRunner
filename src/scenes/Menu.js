@@ -7,7 +7,7 @@ class Menu extends Phaser.Scene {
     this.load.image('button', './assets/button.png')
     this.load.image('gameover', './assets/gameoverScene.png')
     this.load.image('pins', './assets/pin.png')
-    this.load.image('titleScreen', './assets/titleScene.png')
+    this.load.image('titleScreen', './assets/frontimage.png')
     this.load.audio('title_bgm', './assets/bgm1.wav')
     this.load.audio('ingame_bgm', './assets/bgm3.wav')
     this.load.audio('pageflip', './assets/menu_click.wav')

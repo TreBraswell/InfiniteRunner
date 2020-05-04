@@ -1,7 +1,7 @@
 // Player prefab
 class Player extends Phaser.Physics.Arcade.Sprite {
     
-    constructor(scene, x,y,plat,cursor,explosive,explosive2, yarn) {
+    constructor(scene, x,y,plat,cursor,explosive,explosive2, yarn,yarn_right,yarn_atlas) {
         // call Phaser Physics Sprite constructor
         super(scene,x, y, plat); 
         // set up physics sprite
@@ -14,6 +14,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         //explosion timer
         this.explosiontimer = 0;
         this.scalechange = .08; 
+        
         this.jumpchange = 20;
         this.onCollide = true;
         this.changespeed = 20; 
@@ -25,55 +26,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.scene = scene;
         this.cursors = cursor;
         this.yarn = yarn;
-
-        scene.anims.create({ 
-            key: 'right', 
-           defaultTextureKey: 'yarn_atlas',
-	   frames: [
-                { frame: 'yarn_right' }
-            ],
-        });
-        scene.anims.create({
-            key: 'left',
-            defaultTextureKey: 'yarn_atlas',
-            frames: [
-                { frame: 'yarn_left' }
-            ],
-        });
-        scene.anims.create({
-            key: 'jump',
-            defaultTextureKey: 'yarn_atlas',
-            frames: [
-                { frame: 'yarn_up' }
-            ],
-        });
-        scene.anims.create({
-            key: 'hit',
-            defaultTextureKey: 'yarn_atlas',
-            frames: [
-                { frame: 'yarn_hit' }
-            ],
-        });
-        scene.anims.create({
-            key: 'prexplode',
-            defaultTextureKey: 'yarn_atlas',
-            frames: [
-                { frame: 'yarn_grow' }
-            ],
-        });
-        scene.anims.create({
-            key: 'explode',
-            defaultTextureKey: 'yarn_atlas',
-            frames: [
-                { frame: 'poof' }
-            ],
-        });
-        
-
-
-
-
-
         this.scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',

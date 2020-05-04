@@ -19,17 +19,17 @@ class Play extends Phaser.Scene {
         this.load.audio('pinhit2', './assets/pinhit_2.wav');
         this.load.audio('pinhit1', './assets/pinhit.wav');
 
-        this.load.atlas('yarn_atlas', 'assets/yarn_spritesheet.png', 'assets/yarn_sprites.json');
+        this.load.atlas('yarn_atlas', './assets/yarn2_small.png', './assets/yarn1.json');
 
          //  Just a few images to use in our underwater scene
-       this.load.image('yarn', 'assets/yarn_spritesheet.png');
+       this.load.image('yarn_right', 'assets/yarn_spritesheet.png');
 
 
 
 
       }
       create() {
-        this.yarn = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
+        this.yarn = this.physics.add.sprite(70, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
 
 
         this.spawnplatformwhen = game.config.width;
@@ -117,7 +117,7 @@ class Play extends Phaser.Scene {
         this.platformGroup.add(plat);                         // add it to existing group
     }
     addPlayer(){
-      this.player = new Player(this,320, 240, 'yarn',this.input.keyboard.createCursorKeys(),'explosive','explosive2', this.yarn);
+      this.player = new Player(this,320, 240, 'yarn_atlas',this.input.keyboard.createCursorKeys(),'explosive','explosive2', this.yarn,'yarn_atlas','yarn_right');
       this.playerGroup.add(this.player);
     }
     addPin(a,b,c,d,e){

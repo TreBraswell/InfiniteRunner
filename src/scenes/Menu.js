@@ -13,7 +13,7 @@ class Menu extends Phaser.Scene {
     this.load.audio('pageflip', './assets/menu_click.wav')
 
     this.load.image('controls', './assets/controlScene.png')
-    this.load.image('rules', './assets/rules.png')
+    this.load.image('rules', './assets/edits.png')
   }
 
 

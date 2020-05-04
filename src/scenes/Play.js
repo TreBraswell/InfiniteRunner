@@ -19,18 +19,29 @@ class Play extends Phaser.Scene {
         this.load.audio('pinhit2', './assets/pinhit_2.wav');
         this.load.audio('pinhit1', './assets/pinhit.wav');
 
-        this.load.atlas('yarn_atlas', './assets/yarn2_small.png', './assets/yarn1.json');
+  this.load.atlas('yarn_atlas', './assets/yarn2_small.png', './assets/yarn1.json');
+
 
          //  Just a few images to use in our underwater scene
-       this.load.image('yarn_right', 'assets/yarn_spritesheet.png');
+       this.load.image('yarn', './assets/yarn_spritesheet.png');
+
+
+       this.load.image('timetext', './assets/time.png')
+       this.load.image('heart','./assets/heart.png')
+       this.load.image('buttontext', './assets/button_text.png')
 
 
 
 
       }
       create() {
-        this.yarn = this.physics.add.sprite(70, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
+        game.sound.stopAll(); 
+        this.yarn = this.physics.add.sprite(game.config.width/2, game.config.height/2, 'yarn_atlas', 'yarn_right').setScale(0);
 
+
+
+
+        this.buttonCounter = 0;
 
         this.spawnplatformwhen = game.config.width;
         this.spawnpp = 0;
@@ -90,7 +101,17 @@ class Play extends Phaser.Scene {
       fixedWidth: 0
     }
 
-    this.timerText = this.add.text(10, 10, this.timers, menuConfig).setOrigin(0,0);
+
+
+    this.heart1 = this.add.image(10, 400, 'heart').setOrigin(0,0);
+    this.heart2 = this.add.image(50, 400, 'heart').setOrigin(0,0);
+    this.heart3 = this.add.image(90, 400, 'heart').setOrigin(0,0);
+
+
+    this.add.image(10, 10, 'timetext').setOrigin(0,0)
+    this.add.image(500,10,'buttontext').setOrigin(0,0)
+this.bcText = this.add.text(580, 10, this.buttonCounter, menuConfig).setOrigin(0,0);
+    this.timerText = this.add.text(100, 10, this.timers, menuConfig).setOrigin(0,0);
     this.prevtime= -1;
   }
       
@@ -152,6 +173,8 @@ class Play extends Phaser.Scene {
         this.pin2.play();
         pin.destroy();
         player.decreasesize(1);
+        game.state.health--;
+        game.state.hitPin = true;
 
     });
     this.physics.add.overlap( this.buttonGroup,this.playerGroup,function(button, player){
@@ -159,6 +182,7 @@ class Play extends Phaser.Scene {
       this.buttonsound.play();
       button.destroy();
       player.increasesize();
+      game.state.collectedButton = true;
 
       // increase button count
 
@@ -168,6 +192,8 @@ class Play extends Phaser.Scene {
     this.pin1.play();
     pin.destroy();
     player.decreasesize(0);
+    game.state.health--;
+    game.state.hitPin = true;
 
     // decrease hp we have 3 hp
 
@@ -182,11 +208,45 @@ this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(p
   /*plat2.x = Phaser.Math.Between(game.config.width+platformWidth+50,game.config.width+platformWidth+game.config.width);
   plat2.y = Phaser.Math.Between(platformHeight/2, game.config.height - platformHeight/2);*/
 });
+if(game.state.hitPin)
+{
+  if(game.state.health == 2)
+  {
+    this.heart3.destroy()
+  }
+  if(game.state.health == 1)
+  {
+    this.heart2.destroy()
+  }
+  if(game.state.health == 0)
+  {
+    this.heart1.destroy()
+  }
+
+
+  game.state.hitPin = false
+}
+if(game.state.health == 0)
+{
+  game.state.gameOver = true;
+}
+
       if (!game.state.gameOver)
       this.background.tilePositionX +=4;
 
 
       this.timerText.text = this.timers
+
+
+
+
+
+      if(game.state.collectedButton)
+      {
+        this.buttonCounter ++;
+        this.bcText.text = this.buttonCounter;
+        game.state.collectedButton = false;
+      }
 
       if (game.state.gameOver)
       {
@@ -199,11 +259,13 @@ this.physics.add.overlap( this.pinplatformGroup,this.pinplatformGroup,function(p
         game.state.played_death = true;
       }
 
-        if(this.timers > game.persist.highScore)
+      game.persist.currScore =this.buttonCounter * 50 + this.timers *10  
+
+        if(game.persist.currScore > game.persist.highScore)
         {
           
           game.persist.isNew = true;
-          game.persist.highScore = this.timers
+          game.persist.highScore = game.persist.currScore
           
         }
         game.persist.currScore = this.timers

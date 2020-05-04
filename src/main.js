@@ -12,7 +12,7 @@ let config = {
             }
         }
     },
-    scene: [ Menu, Play, GameOver ],
+    scene: [ Menu, Play, Controls, Rules, GameOver ],
 };
 
 let game = new Phaser.Game(config);
@@ -32,14 +32,21 @@ let keyF, keyLEFT, keyRIGHT,keyPrev,keyNext,keyB, keySPACE;
 let timer;
 let keyR, keyM
 
+
 game.state = {
     gameOver: false,
-    played_death: false
+    played_death: false,
+    collectedButton: false,
+    hitPin: false,
+    health: 3
+    
 }
 
 game.persist = {
     highScore: 0,
     currScore: 0,
+    buttonScore: 0,
+
     isNew: false    // this is handled in the Play.js, so we need info carried over from Play to GameOver Scene
 
 }

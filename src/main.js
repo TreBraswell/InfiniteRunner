@@ -12,7 +12,7 @@ Few sounds were taken from online : jump sound https://freesound.org/people/Left
     physics: {
         default: 'arcade',
         arcade: {
-            debug: true,
+            debug: false,
             gravity: {
                 x: 0,
                 y: 0

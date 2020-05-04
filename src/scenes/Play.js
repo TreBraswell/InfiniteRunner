@@ -31,7 +31,7 @@ class Play extends Phaser.Scene {
 
        this.load.image('timetext', './assets/time.png')
        this.load.image('heart','./assets/heart.png')
-       this.load.image('buttontext', './assets/button_text.png')
+       this.load.image('buttontext', './assets/buttonscore.png')
 
 
 

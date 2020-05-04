@@ -6,7 +6,7 @@ class Rules extends Phaser.Scene {
 
 
     preload() {
-        this.load.image('rules', './assets/rules.png')
+        this.load.image('rules', './assets/edits.png')
 
   
     }
@@ -37,6 +37,12 @@ class Rules extends Phaser.Scene {
             this.flip.play();
             this.scene.start("controlScene");   
           }
+          if(Phaser.Input.Keyboard.JustDown(keyRIGHT))
+          {
+            this.flip.play();
+            this.scene.start("controlScene");   
+          }
+
     }
 
 }

@@ -28,7 +28,7 @@ class Rules extends Phaser.Scene {
     {
 
         if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-
+            
             this.scene.start("playScene");   
 
           }
@@ -40,7 +40,7 @@ class Rules extends Phaser.Scene {
           if(Phaser.Input.Keyboard.JustDown(keyRIGHT))
           {
             this.flip.play();
-            this.scene.start("controlScene");   
+            this.scene.start("playScene");
           }
 
     }
